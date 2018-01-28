@@ -12,7 +12,7 @@
      */
     _sourceIsIframe: function(source) {
       let type = this.getVideoType(source);
-      if (type == 'youtube' || type == 'vimeo' || type == 'external') {
+      if (type == 'youtube' || type == 'vimeo' || type == 'sketchfab' || type == 'external') {
         return true;
       }
       else {
@@ -23,7 +23,7 @@
      * Check source of the video, potentially correcting bad links.
      */
     cleanVideoSource: function(input, type) {
-      if (type == 'vimeo' || type == 'youtube') {
+      if (type == 'vimeo' || type == 'youtube' || type == 'sketchfab') {
         // strip off the ? modifier for youtube/vimeo so we can build ourselves
         var tmp = input.split('?');
         var v = '';
@@ -51,6 +51,10 @@
         else if (input.indexOf('youtu.be') != -1) {
           return input.replace('youtu.be/', 'www.youtube.com/embed/') + v;
         }
+        // copy and paste from the URL for sketchfab
+        else if (input.indexOf('sketchfab.com') != -1 && input.indexOf('/embed') == -1) {
+          return input + '/embed';
+        }
       }
       return input;
     },
@@ -63,7 +67,9 @@
       }
       else if (source.indexOf('youtube') != -1 || source.indexOf('youtu.be') != -1) {
         return 'youtube';
-
+      }
+      else if (source.indexOf('sketchfab.com') != -1) {
+        return 'sketchfab';
       }
       return 'local';
     },
