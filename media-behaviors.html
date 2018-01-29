@@ -12,18 +12,18 @@
      */
     _sourceIsIframe: function(source) {
       let type = this.getVideoType(source);
-      if (type == 'youtube' || type == 'vimeo' || type == 'sketchfab' || type == 'external') {
-        return true;
+      if (type == 'internal') {
+        return false;
       }
       else {
-        return false;
+        return true;
       }
     },
     /**
      * Check source of the video, potentially correcting bad links.
      */
     cleanVideoSource: function(input, type) {
-      if (type == 'vimeo' || type == 'youtube' || type == 'sketchfab') {
+      if (type != 'internal') {
         // strip off the ? modifier for youtube/vimeo so we can build ourselves
         var tmp = input.split('?');
         var v = '';
@@ -55,6 +55,10 @@
         else if (input.indexOf('sketchfab.com') != -1 && input.indexOf('/embed') == -1) {
           return input + '/embed';
         }
+        // copy and paste from the URL for sketchfab
+        else if (input.indexOf('dailymotion.com') != -1 && input.indexOf('/embed') == -1) {
+          return input.replace('/video/', '/embed/video/');
+        }
       }
       return input;
     },
@@ -62,6 +66,7 @@
      * Figure out the type of video based on source.
      */
     getVideoType: function(source) {
+      // some common ones
       if (source.indexOf('vimeo') != -1) {
         return 'vimeo';
       }
@@ -71,7 +76,17 @@
       else if (source.indexOf('sketchfab.com') != -1) {
         return 'sketchfab';
       }
-      return 'local';
+      else if (source.indexOf('dailymotion.com') != -1) {
+        return 'dailymotion';
+      }
+      // see if it's a direct file reference, otherwise we'll assume it's external
+      if (source.indexOf('.mp4') != -1 || source.indexOf('.mov') != -1 || source.indexOf('.ogg') != -1 || source.indexOf('.webm') != -1) {
+        return 'local';
+      }
+      else {
+        // not sure but iframe it for funzies
+        return 'external';
+      }
     },
   };
 </script>
