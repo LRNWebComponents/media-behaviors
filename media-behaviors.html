@@ -57,6 +57,10 @@
         else if (input.indexOf('youtube.com/watch') != -1) {
           return input.replace('youtube.com/watch', 'youtube.com/embed/') + v;
         }
+        // copy and paste from the URL
+        else if (input.indexOf('youtube-no-cookie.com/embed') != -1) {
+          return input.replace('youtube-no-cookie.com/embed', 'youtube.com/embed/') + v;
+        }
         // weird share-ly style version
         else if (input.indexOf('youtu.be') != -1) {
           return input.replace('youtu.be/', 'www.youtube.com/embed/') + v;
