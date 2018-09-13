@@ -81,9 +81,6 @@
      */
     getVideoType: function(source) {
       let localFormats = ['aac','flac','mov','mp3','mp4','oga','ogg','ogv','wav','webm'], isLocal = false;
-      findType('audio',audio);
-      findType('video',video);
-      return type;
       // some common ones
       if (source.indexOf('vimeo') != -1) {
         return 'vimeo';
@@ -98,7 +95,7 @@
         return 'dailymotion';
       }
       for(let i=0; i<localFormats.length;i++){
-        if(!isLocal && source.toLowerCase.indexOf('.'+localFormats[i]) > -1) isLocal = true;
+        if(!isLocal && source.toLowerCase().indexOf('.'+localFormats[i]) > -1) isLocal = true;
       }
       // see if it's a direct file reference, otherwise we'll assume it's external
       if (isLocal) {
